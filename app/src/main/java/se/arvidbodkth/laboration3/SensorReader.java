@@ -6,6 +6,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.Locale;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -39,15 +40,22 @@ public class SensorReader {
 
     private double x, y, z, maxX = -1000.0F, maxY = -1000.0F, maxZ = -1000.0F,
             minX = 1000.0F, minY = 1000.0F, minZ = 1000.0F;
+    private double filterX, filterY, filterZ;
+
+    private double filterAmount = 0.5;
+
     private int sensorFrequency = 0;
+
+    private ArrayList<SensorReading> readings;
 
     public SensorReader(MainActivity mainActivity){
         this.mainActivity = mainActivity;
+
+        readings = new ArrayList<>();
     }
 
 
     public void startListening(){
-
         sensorManager = (SensorManager) mainActivity.getSystemService(Context.SENSOR_SERVICE);
         Sensor accelerometer = sensorManager
                 .getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
@@ -91,10 +99,30 @@ public class SensorReader {
                 minZ = z;
 
             // Store time stamp
-            String data = x + "\n" + y + "\n" + z + "\n" + event.timestamp
-                    + "\r\n";
-
+            String data = x + "\n" + y + "\n" + z;
             mainActivity.setTextView(data);
+
+            /*filterX = filterAmount * filterX + (1-filterAmount)*x;
+            filterY = filterAmount * filterY + (1-filterAmount)*y;
+            filterZ = filterAmount * filterZ + (1-filterAmount)*z;*/
+
+
+            readings.add(new SensorReading(x, y, z));
+
+            if(readings.size() > 100){
+
+                for (SensorReading s: readings) {
+
+                }
+
+                readings.clear();
+            }
+
+
+
+                //data = filterX + "\n" + filterY + "\n" + filterZ;
+            mainActivity.setTextView2(data);
+
         }
     };
 }

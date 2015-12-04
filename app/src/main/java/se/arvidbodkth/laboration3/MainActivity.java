@@ -14,7 +14,7 @@ public class MainActivity extends AppCompatActivity {
 
     private SensorReader sensorReader;
 
-    private TextView textView;
+    private TextView textView, textView2;
     private Button buttonStart, buttonStop;
 
     @Override
@@ -26,6 +26,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         textView = (TextView) findViewById(R.id.textView);
+        textView2 = (TextView) findViewById(R.id.textView2);
 
         buttonStart = (Button) findViewById(R.id.startButton);
         buttonStop = (Button) findViewById(R.id.stopButton);
@@ -73,5 +74,9 @@ public class MainActivity extends AppCompatActivity {
 
     public void setTextView(String msg){
         textView.setText(msg);
+    }
+
+    public void setTextView2(String msg){
+        textView2.setText(msg);
     }
 }
