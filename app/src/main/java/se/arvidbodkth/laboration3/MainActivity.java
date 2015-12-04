@@ -8,6 +8,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -16,6 +17,8 @@ public class MainActivity extends AppCompatActivity {
 
     private TextView textView, textView2;
     private Button buttonStart, buttonStop;
+
+    private String sysMsg;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +33,8 @@ public class MainActivity extends AppCompatActivity {
 
         buttonStart = (Button) findViewById(R.id.startButton);
         buttonStop = (Button) findViewById(R.id.stopButton);
+
+        sysMsg = new String();
 
         sensorReader = new SensorReader(this);
 
@@ -78,5 +83,14 @@ public class MainActivity extends AppCompatActivity {
 
     public void setTextView2(String msg){
         textView2.setText(msg);
+    }
+
+    public void showToast(String msg) {
+        if(!sysMsg.equals(msg)) {
+            System.out.println(msg);
+            sysMsg = msg;
+        }
+        //Toast toast = Toast.makeText(this, msg, Toast.LENGTH_SHORT);
+        //toast.show();
     }
 }

@@ -42,9 +42,9 @@ public class SensorReader {
             minX = 1000.0F, minY = 1000.0F, minZ = 1000.0F;
     private double filterX, filterY, filterZ;
 
-    private double filterAmount = 0.5;
+    private double filterAmount = 0.985;
 
-    private int sensorFrequency = 0;
+    private int sensorFrequency = 10;
 
     private ArrayList<SensorReading> readings;
 
@@ -102,26 +102,41 @@ public class SensorReader {
             String data = x + "\n" + y + "\n" + z;
             mainActivity.setTextView(data);
 
-            /*filterX = filterAmount * filterX + (1-filterAmount)*x;
+            filterX = filterAmount * filterX + (1-filterAmount)*x;
             filterY = filterAmount * filterY + (1-filterAmount)*y;
-            filterZ = filterAmount * filterZ + (1-filterAmount)*z;*/
+            filterZ = filterAmount * filterZ + (1-filterAmount)*z;
 
 
-            readings.add(new SensorReading(x, y, z));
+            /*readings.add(new SensorReading(x, y, z));
 
             if(readings.size() > 100){
 
                 for (SensorReading s: readings) {
-
+                    filterX += s.getX();
+                    filterY += s.getY();
+                    filterZ += s.getZ();
                 }
 
+                filterX = filterX/100;
+                filterY = filterY/100;
+                filterZ = filterZ/100;
+
                 readings.clear();
-            }
+            }*/
 
 
 
-                //data = filterX + "\n" + filterY + "\n" + filterZ;
+            data = filterX + "\n" + filterY + "\n" + filterZ;
             mainActivity.setTextView2(data);
+
+
+            if (filterX > 9) mainActivity.showToast("Vänster");
+            if (filterX < -9) mainActivity.showToast("Höger");
+            if (filterY > 9) mainActivity.showToast("Upprätt");
+            if (filterY < -9) mainActivity.showToast("Upp och ner");
+            if (filterZ > 9) mainActivity.showToast("Ligger, skärm upp");
+            if (filterZ < -9) mainActivity.showToast("Höger");
+
 
         }
     };
