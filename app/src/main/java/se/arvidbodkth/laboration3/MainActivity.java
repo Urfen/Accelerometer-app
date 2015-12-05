@@ -27,6 +27,7 @@ public class MainActivity extends AppCompatActivity {
 
         sensorReader = new SensorReader(this);
 
+
         lastToast = "";
     }
 
