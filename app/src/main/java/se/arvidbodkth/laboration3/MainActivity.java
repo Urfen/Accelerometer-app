@@ -1,5 +1,6 @@
 package se.arvidbodkth.laboration3;
 
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -25,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         imageView = (ImageView) findViewById(R.id.imageView);
-        //imageView.setImageResource();
+        imageView.setImageResource();
 
         sensorReader = new SensorReader(this);
 
