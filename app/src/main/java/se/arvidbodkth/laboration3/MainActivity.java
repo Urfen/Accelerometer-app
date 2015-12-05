@@ -1,6 +1,7 @@
 package se.arvidbodkth.laboration3;
 
 
+import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -12,6 +13,7 @@ import android.widget.Toast;
 public class MainActivity extends AppCompatActivity {
 
     private SensorReader sensorReader;
+    private AnimationDrawable animationDrawable;
     private ImageView imageView;
     private String lastToast;
 
@@ -23,7 +25,10 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         imageView = (ImageView) findViewById(R.id.imageView);
-        imageView.setImageResource(R.drawable.left1);
+
+
+        imageView.setBackgroundResource(R.drawable.left1);
+
 
         sensorReader = new SensorReader(this);
 
@@ -33,34 +38,34 @@ public class MainActivity extends AppCompatActivity {
     public void showImage(int nr){
         switch (nr){
             case 0:
-                imageView.setImageResource(R.drawable.left1);
+                imageView.setBackgroundResource(R.drawable.left1);
                 break;
             case 1:
-                imageView.setImageResource(R.drawable.left2);
+                imageView.setBackgroundResource(R.drawable.left2);
                 break;
             case 2:
-                imageView.setImageResource(R.drawable.left3);
+                imageView.setBackgroundResource(R.drawable.left3);
                 break;
             case 3:
-                imageView.setImageResource(R.drawable.left4);
+                imageView.setBackgroundResource(R.drawable.left4);
                 break;
             case 4:
-                imageView.setImageResource(R.drawable.left5);
+                imageView.setBackgroundResource(R.drawable.left5);
                 break;
             case 5:
-                imageView.setImageResource(R.drawable.left6);
+                imageView.setBackgroundResource(R.drawable.left6);
                 break;
             case 6:
-                imageView.setImageResource(R.drawable.left7);
+                imageView.setBackgroundResource(R.drawable.left7);
                 break;
             case 7:
-                imageView.setImageResource(R.drawable.left8);
+                imageView.setBackgroundResource(R.drawable.left8);
                 break;
             case 8:
-                imageView.setImageResource(R.drawable.left9);
+                imageView.setBackgroundResource(R.drawable.left9);
                 break;
             case 9:
-                imageView.setImageResource(R.drawable.left10);
+                imageView.setBackgroundResource(R.drawable.left10);
                 break;
         }
     }
@@ -102,8 +107,22 @@ public class MainActivity extends AppCompatActivity {
             sensorReader.stopListening();
             return true;
         }
-
         return super.onOptionsItemSelected(item);
+    }
+
+    public void startAnimation(){
+        imageView.setBackgroundResource(R.drawable.animation);
+        animationDrawable = (AnimationDrawable) imageView.getBackground();
+        animationDrawable.start();
+    }
+
+    public boolean isAnimationRunnig(){
+        if(animationDrawable != null) return animationDrawable.isRunning();
+        else return false;
+    }
+
+    public void stopAnimation(boolean stop){
+        animationDrawable.stop();
     }
 
     public void showToast(String msg) {

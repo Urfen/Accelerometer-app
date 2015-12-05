@@ -32,18 +32,20 @@ public class SensorReader {
 
     private double isShown = 0;
 
+    private boolean animationInProgress;
+    private int animationInProgressCounter = 0;
+
     public SensorReader(MainActivity mainActivity){
         this.mainActivity = mainActivity;
 
         readings = new ArrayList<>();
         sensorFrequency = 0;
-        lowPassFilterAmount = 0.985;
+        lowPassFilterAmount = 0.975;
         highPassFilterAmount = 0.015;
         x = 0;
         y = 0;
         z = 0;
     }
-
 
     public void startListening(){
         sensorManager = (SensorManager) mainActivity.getSystemService(Context.SENSOR_SERVICE);
@@ -69,6 +71,14 @@ public class SensorReader {
 
         @Override
         public void onSensorChanged(SensorEvent event) {
+            animationInProgress = mainActivity.isAnimationRunnig();
+            if(mainActivity.isAnimationRunnig()){
+                animationInProgressCounter++;
+                if(animationInProgressCounter>700){
+                    mainActivity.stopAnimation(true);
+                    animationInProgressCounter = 0;
+                }
+            }
 
             x = event.values[0];
             y = event.values[1];
@@ -89,9 +99,11 @@ public class SensorReader {
 
             for (int i = 0; i < 10; i++) {
                 if(lowFilterX>i && lowFilterX<i+1 && isShown != i){
-                    System.out.println("Visar bild: " + (i+1));
-                    mainActivity.showImage(i);
-                    isShown = i;
+                    if(!animationInProgress){
+                        mainActivity.showImage(i);
+                        //System.out.println("Bild: " + (i+1));
+                        isShown = i;
+                    }
                 }
             }
 
@@ -106,10 +118,13 @@ public class SensorReader {
             //New highpass value
             readings.add(new SensorReading(highFilterX, highFilterY, highFilterZ));
 
+
+
             if(readings.get(0).compareReading(readings.get(1)) > 0.3 ||
                     readings.get(0).compareReading(readings.get(1)) < -0.3){
                 skakning++;
-                if(skakning > 200){
+                if(skakning > 70){
+                    mainActivity.startAnimation();
                     System.out.println("Skakar");
                     skakning = 0;
                 }
@@ -119,5 +134,13 @@ public class SensorReader {
             readings.clear();
         }
     };
+
+    public boolean isAnimationInProgress() {
+        return animationInProgress;
+    }
+
+    public void setAnimationInProgress(boolean animationInProgress) {
+        this.animationInProgress = animationInProgress;
+    }
 }
 
