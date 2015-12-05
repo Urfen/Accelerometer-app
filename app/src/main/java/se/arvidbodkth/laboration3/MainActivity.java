@@ -23,7 +23,7 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         imageView = (ImageView) findViewById(R.id.imageView);
-        imageView.setImageResource(R.drawable.left01);
+        imageView.setImageResource(R.drawable.left1);
 
         sensorReader = new SensorReader(this);
 
@@ -31,7 +31,38 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void showImage(int nr){
-        imageView.setImageResource(R.drawable."left01");
+        switch (nr){
+            case 0:
+                imageView.setImageResource(R.drawable.left1);
+                break;
+            case 1:
+                imageView.setImageResource(R.drawable.left2);
+                break;
+            case 2:
+                imageView.setImageResource(R.drawable.left3);
+                break;
+            case 3:
+                imageView.setImageResource(R.drawable.left4);
+                break;
+            case 4:
+                imageView.setImageResource(R.drawable.left5);
+                break;
+            case 5:
+                imageView.setImageResource(R.drawable.left6);
+                break;
+            case 6:
+                imageView.setImageResource(R.drawable.left7);
+                break;
+            case 7:
+                imageView.setImageResource(R.drawable.left8);
+                break;
+            case 8:
+                imageView.setImageResource(R.drawable.left9);
+                break;
+            case 9:
+                imageView.setImageResource(R.drawable.left10);
+                break;
+        }
     }
 
     @Override

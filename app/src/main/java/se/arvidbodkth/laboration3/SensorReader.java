@@ -89,8 +89,8 @@ public class SensorReader {
 
             for (int i = 0; i < 10; i++) {
                 if(lowFilterX>i && lowFilterX<i+1 && isShown != i){
-
-                    System.out.println(i);
+                    System.out.println("Visar bild: " + (i+1));
+                    mainActivity.showImage(i);
                     isShown = i;
                 }
             }
