@@ -85,6 +85,7 @@ public class MainActivity extends AppCompatActivity {
         textView2.setText(msg);
     }
 
+
     public void showToast(String msg) {
         if(!sysMsg.equals(msg)) {
             System.out.println(msg);

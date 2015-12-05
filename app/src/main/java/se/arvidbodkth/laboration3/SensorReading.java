@@ -14,6 +14,10 @@ public class SensorReading {
         this.z = z;
     }
 
+    public double compareReading(SensorReading s){
+        return (s.getX()-x + s.getY()-y + s.getZ()-z)/3;
+    }
+
     public double getX() {
         return x;
     }

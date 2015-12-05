@@ -1,33 +1,13 @@
 package se.arvidbodkth.laboration3;
 
 
-import java.io.BufferedWriter;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
 import java.util.ArrayList;
-import java.util.Locale;
-import java.util.Timer;
-import java.util.TimerTask;
 
-import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
-import android.content.SharedPreferences;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
-import android.os.Bundle;
-import android.preference.PreferenceManager;
-import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
-import android.widget.TextView;
-import android.widget.Toast;
 
 /**
  * Created by Arvid on 2015-12-04.
@@ -40,18 +20,24 @@ public class SensorReader {
 
     private double x, y, z, maxX = -1000.0F, maxY = -1000.0F, maxZ = -1000.0F,
             minX = 1000.0F, minY = 1000.0F, minZ = 1000.0F;
-    private double filterX, filterY, filterZ;
 
-    private double filterAmount = 0.985;
+    private double lowFilterX, lowFilterY, lowFilterZ;
+    private double highFilterX, highFilterY, highFilterZ;
+
+    private double lowPassFilterAmount = 0.985;
+    private double highPassFilterAmount = 0.015;
+
 
     private int sensorFrequency = 10;
 
     private ArrayList<SensorReading> readings;
+    private ArrayList<SensorReading> lastReadings;
 
     public SensorReader(MainActivity mainActivity){
         this.mainActivity = mainActivity;
 
         readings = new ArrayList<>();
+        lastReadings = new ArrayList<>();
     }
 
 
@@ -98,45 +84,46 @@ public class SensorReader {
             if (z < minZ)
                 minZ = z;
 
-            // Store time stamp
             String data = x + "\n" + y + "\n" + z;
-            mainActivity.setTextView(data);
 
-            filterX = filterAmount * filterX + (1-filterAmount)*x;
-            filterY = filterAmount * filterY + (1-filterAmount)*y;
-            filterZ = filterAmount * filterZ + (1-filterAmount)*z;
+            lowFilterX = lowPassFilterAmount * lowFilterX + (1- lowPassFilterAmount)*x;
+            lowFilterY = lowPassFilterAmount * lowFilterY + (1- lowPassFilterAmount)*y;
+            lowFilterZ = lowPassFilterAmount * lowFilterZ + (1- lowPassFilterAmount)*z;
 
-
-            /*readings.add(new SensorReading(x, y, z));
-
-            if(readings.size() > 100){
-
-                for (SensorReading s: readings) {
-                    filterX += s.getX();
-                    filterY += s.getY();
-                    filterZ += s.getZ();
-                }
-
-                filterX = filterX/100;
-                filterY = filterY/100;
-                filterZ = filterZ/100;
-
-                readings.clear();
-            }*/
-
-
-
-            data = filterX + "\n" + filterY + "\n" + filterZ;
+            data = lowFilterX + "\n" + lowFilterY + "\n" + lowFilterZ;
             mainActivity.setTextView2(data);
 
 
-            if (filterX > 9) mainActivity.showToast("Vänster");
-            if (filterX < -9) mainActivity.showToast("Höger");
-            if (filterY > 9) mainActivity.showToast("Upprätt");
-            if (filterY < -9) mainActivity.showToast("Upp och ner");
-            if (filterZ > 9) mainActivity.showToast("Ligger, skärm upp");
-            if (filterZ < -9) mainActivity.showToast("Höger");
+            if (lowFilterX > 9) mainActivity.showToast("Vänster");
+            if (lowFilterX < -9) mainActivity.showToast("Höger");
+            if (lowFilterY > 9) mainActivity.showToast("Upprätt");
+            if (lowFilterY < -9) mainActivity.showToast("Upp och ner");
+            if (lowFilterZ > 9) mainActivity.showToast("Skärm upp");
+            if (lowFilterZ < -9) mainActivity.showToast("Skärm ner");
 
+            //Last highpass value
+            readings.add(new SensorReading(highFilterX, highFilterY, highFilterZ));
+
+           // System.out.println("1: " + highFilterX);
+
+            highFilterX = highPassFilterAmount * highFilterX + (1- highPassFilterAmount)*x;
+            highFilterY = highPassFilterAmount * highFilterY + (1- highPassFilterAmount) * y;
+            highFilterZ = highPassFilterAmount * highFilterZ + (1- highPassFilterAmount)*z;
+
+            //New highpass value
+            readings.add(new SensorReading(highFilterX, highFilterY, highFilterZ));
+
+           // System.out.println("2: " + highFilterX);
+
+            data = highFilterX + "\n" + highFilterY + "\n" + highFilterZ;
+            mainActivity.setTextView(data);
+
+//            System.out.println(readings.get(0).compareReading(readings.get(1)));
+
+            if(readings.get(0).compareReading(readings.get(1)) > 1 || readings.get(0).compareReading(readings.get(1)) < -1){
+                System.out.println("Skakar");
+                readings.clear();
+            }
 
         }
     };
