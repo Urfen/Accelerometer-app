@@ -10,6 +10,10 @@ import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+/**
+ * Created by Arvid Bodin and Mattias Grehnik on 2015-12-04.
+ *
+ */
 public class MainActivity extends AppCompatActivity {
 
     private SensorReader sensorReader;

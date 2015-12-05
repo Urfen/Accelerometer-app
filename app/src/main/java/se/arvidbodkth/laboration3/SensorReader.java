@@ -10,7 +10,7 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 
 /**
- * Created by Arvid on 2015-12-04.
+ * Created by Arvid Bodin and Mattias Grehnik on 2015-12-04.
  *
  */
 public class SensorReader {
@@ -74,7 +74,7 @@ public class SensorReader {
             animationInProgress = mainActivity.isAnimationRunnig();
             if(mainActivity.isAnimationRunnig()){
                 animationInProgressCounter++;
-                if(animationInProgressCounter>700){
+                if(animationInProgressCounter>500){
                     mainActivity.stopAnimation(true);
                     animationInProgressCounter = 0;
                 }
