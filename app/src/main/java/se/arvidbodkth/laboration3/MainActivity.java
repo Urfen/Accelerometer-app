@@ -27,8 +27,11 @@ public class MainActivity extends AppCompatActivity {
 
         sensorReader = new SensorReader(this);
 
-
         lastToast = "";
+    }
+
+    public void showImage(int nr){
+        imageView.setImageResource(R.drawable."left01");
     }
 
     @Override
