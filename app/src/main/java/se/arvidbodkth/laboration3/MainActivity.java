@@ -7,12 +7,14 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
     private SensorReader sensorReader;
+    private ImageView imageView;
     private String lastToast;
 
     @Override
@@ -22,7 +24,13 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        imageView = (ImageView) findViewById(R.id.imageView);
+        //imageView.setImageResource();
+
         sensorReader = new SensorReader(this);
+
+
+
         lastToast = "";
     }
 
