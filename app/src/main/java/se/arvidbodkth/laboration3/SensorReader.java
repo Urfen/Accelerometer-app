@@ -19,7 +19,7 @@ public class SensorReader {
     private MainActivity mainActivity;
 
     private double x, y, z;
-    private double lowPassFilterAmount = 0.985;
+    private double lowPassFilterAmount = 0.995;
     private double highPassFilterAmount = 0.015;
 
     private double lowFilterX, lowFilterY, lowFilterZ;
@@ -28,13 +28,14 @@ public class SensorReader {
     private int sensorFrequency = 0;
 
     private ArrayList<SensorReading> readings;
-    private ArrayList<SensorReading> lastReadings;
+
+
+    private double isShown = 0;
 
     public SensorReader(MainActivity mainActivity){
         this.mainActivity = mainActivity;
 
         readings = new ArrayList<>();
-        lastReadings = new ArrayList<>();
     }
 
 
@@ -81,6 +82,21 @@ public class SensorReader {
             if (lowFilterY < -9) mainActivity.showToast("Upp och ner");
             if (lowFilterZ > 9) mainActivity.showToast("Skärm upp");
             if (lowFilterZ < -9) mainActivity.showToast("Skärm ner");
+
+            for (int i = 0; i < 10; i++) {
+                if(lowFilterX>i && lowFilterX<i+1 && isShown != i){
+                    System.out.println(i);
+                    isShown = i;
+                }
+            }
+
+
+
+
+
+
+
+
 
             //Last highpass value
             readings.add(new SensorReading(highFilterX, highFilterY, highFilterZ));
