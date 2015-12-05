@@ -40,7 +40,7 @@ public class SensorReader {
 
         readings = new ArrayList<>();
         sensorFrequency = 0;
-        lowPassFilterAmount = 0.975;
+        lowPassFilterAmount = 0.98;
         highPassFilterAmount = 0.015;
         x = 0;
         y = 0;
