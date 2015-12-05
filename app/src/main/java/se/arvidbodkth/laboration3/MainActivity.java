@@ -1,15 +1,12 @@
 package se.arvidbodkth.laboration3;
 
-import android.graphics.BitmapFactory;
+
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
@@ -26,11 +23,9 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         imageView = (ImageView) findViewById(R.id.imageView);
-        imageView.setImageResource();
+        imageView.setImageResource(R.drawable.left01);
 
         sensorReader = new SensorReader(this);
-
-
 
         lastToast = "";
     }
