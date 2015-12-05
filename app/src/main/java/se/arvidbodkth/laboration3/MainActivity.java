@@ -12,13 +12,8 @@ import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
-
     private SensorReader sensorReader;
-
-    private TextView textView, textView2;
-    private Button buttonStart, buttonStop;
-
-    private String sysMsg;
+    private String lastToast;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,32 +22,26 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-
-        textView = (TextView) findViewById(R.id.textView);
-        textView2 = (TextView) findViewById(R.id.textView2);
-
-        buttonStart = (Button) findViewById(R.id.startButton);
-        buttonStop = (Button) findViewById(R.id.stopButton);
-
-        sysMsg = new String();
-
         sensorReader = new SensorReader(this);
-
+        lastToast = "";
     }
 
-    public void onStartButtonClicked(View v){
-        sensorReader.startListening();
-    }
-
-    public void onStopButtonClicked(View v){
+    @Override
+    protected void onPause() {
+        super.onPause();
         sensorReader.stopListening();
     }
 
-
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        sensorReader.stopListening();
+    }
 
     @Override
     protected void onStart() {
         super.onStart();
+        sensorReader.startListening();
     }
 
     @Override
@@ -64,34 +53,25 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.start) {
+            sensorReader.startListening();
+            return true;
+        }
+        if (id == R.id.stop) {
+            sensorReader.stopListening();
             return true;
         }
 
         return super.onOptionsItemSelected(item);
     }
 
-    public void setTextView(String msg){
-        textView.setText(msg);
-    }
-
-    public void setTextView2(String msg){
-        textView2.setText(msg);
-    }
-
-
     public void showToast(String msg) {
-        if(!sysMsg.equals(msg)) {
-            System.out.println(msg);
-            sysMsg = msg;
+        if(!msg.equals(lastToast)) {
+            Toast toast = Toast.makeText(this, msg, Toast.LENGTH_SHORT);
+            toast.show();
+            lastToast = msg;
         }
-        //Toast toast = Toast.makeText(this, msg, Toast.LENGTH_SHORT);
-        //toast.show();
     }
 }
