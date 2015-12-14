@@ -23,7 +23,7 @@ public class SensorReader {
     private double highPassFilterAmount;
 
     private double lowFilterX, lowFilterY, lowFilterZ;
-    private double vector, filteredVector;
+    private double vector, lastVector, filteredVector;
 
     private int sensorFrequency = 0;
     private int skakning = 0;
@@ -109,6 +109,7 @@ public class SensorReader {
 
             //Get the current vector.
             vector = Math.sqrt(x*x + y*y + z*z);
+            lastVector = filteredVector;
 
 
             //Filter out the constant with the highpassfilter
@@ -116,9 +117,13 @@ public class SensorReader {
                     ((1- highPassFilterAmount)*vector);
 
 
-            //System.out.println(filteredVector);
-            if(filteredVector > 14){
+            //If the new vector is more than 0,5G larger than the
+            //last its being shaken.
+            if(filteredVector > lastVector + 0.5){
+                System.out.println(skakning + " " + filteredVector);
                 skakning++;
+                //If their has been 150 shakes than none shakes
+                //the phone have been shocked for about 1 sek.
                 if(skakning > 150){
                     mainActivity.startAnimation();
                     System.out.println("Skakar");
