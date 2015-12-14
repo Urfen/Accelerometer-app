@@ -23,7 +23,7 @@ public class SensorReader {
     private double highPassFilterAmount;
 
     private double lowFilterX, lowFilterY, lowFilterZ;
-    private double highFilterX, highFilterY, highFilterZ;
+    private double vector, filteredVector;
 
     private int sensorFrequency = 0;
     private int skakning = 0;
@@ -107,23 +107,19 @@ public class SensorReader {
                 }
             }
 
-            //Last highpass value
-            readings.add(new SensorReading(highFilterX, highFilterY, highFilterZ));
-
-            //Get the changes via highpass filtering.
-            highFilterX = highPassFilterAmount * highFilterX + (1- highPassFilterAmount)*x;
-            highFilterY = highPassFilterAmount * highFilterY + (1- highPassFilterAmount) * y;
-            highFilterZ = highPassFilterAmount * highFilterZ + (1- highPassFilterAmount)*z;
-
-            //New highpass value
-            readings.add(new SensorReading(highFilterX, highFilterY, highFilterZ));
+            //Get the current vector.
+            vector = Math.sqrt(x*x + y*y + z*z);
 
 
+            //Filter out the constant with the highpassfilter
+            filteredVector = (highPassFilterAmount * filteredVector) +
+                    ((1- highPassFilterAmount)*vector);
 
-            if(readings.get(0).compareReading(readings.get(1)) > 0.3 ||
-                    readings.get(0).compareReading(readings.get(1)) < -0.3){
+
+            //System.out.println(filteredVector);
+            if(filteredVector > 14){
                 skakning++;
-                if(skakning > 70){
+                if(skakning > 150){
                     mainActivity.startAnimation();
                     System.out.println("Skakar");
                     skakning = 0;
